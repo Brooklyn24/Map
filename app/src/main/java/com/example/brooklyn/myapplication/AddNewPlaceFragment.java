@@ -43,6 +43,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,7 +97,6 @@ public class AddNewPlaceFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
-            Log.d("logz", "onActivityResult: ");
             imageUri = Uri.parse(mCurrentPhotoPath);
             Picasso.with(context)
                     .load(imageUri)
@@ -126,8 +126,8 @@ public class AddNewPlaceFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         finalDate = Calendar.getInstance();
-        sdfTimeTextView = new SimpleDateFormat("K:mm a");
-        sdfDateTextView = new SimpleDateFormat("EEE, d MMM yyyy");
+        sdfTimeTextView = new SimpleDateFormat("K:mm a", Locale.ENGLISH);
+        sdfDateTextView = new SimpleDateFormat("EEE, d MMM yyyy", Locale.ENGLISH);
         latLng = getArguments().getParcelable(LAT_LNG_KEY);
     }
 
@@ -264,7 +264,7 @@ public class AddNewPlaceFragment extends Fragment {
     public void onLaunchCamera() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-            File photoFile = null;
+            File photoFile;
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
@@ -282,11 +282,11 @@ public class AddNewPlaceFragment extends Fragment {
     }
 
     private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ENGLISH).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = new File(Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_DCIM), "Camera");
-        File image = null;
+        File image;
         storageDir.mkdirs();
         image = File.createTempFile(
                 imageFileName,
