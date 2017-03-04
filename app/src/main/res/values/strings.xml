@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Map</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyB68Hcvw09NW6QHjiprg6wj2yHrCGkvuA8</string>
+    <string name="Snackbar_alert_no_internet">Oops.. No internet connection</string>
+    <string name="Snackbar_alert_try_again">TRY AGAIN</string>
+    <string name="button_new_point">new point</string>
+    <string name="snaclbar_alert_add_new_place">Add a new place...</string>
+    <string name="snackbar_alert_cancel">Cancel</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="input_title">Title</string>
+    <string name="button_done">Done</string>
+</resources>
