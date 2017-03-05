@@ -30,6 +30,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.OkHttpClient;
 import permissions.dispatcher.RuntimePermissions;
 
@@ -42,40 +45,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ServiceResultReceiver serviceResultReceiver;
     private GoogleMap map;
     private Snackbar addNewPlaceSnackbar;
-    private MarkerOptions tempMarker;
     private MapFragment mapFragment;
     private ArrayList<GeoPoint> geoPoints;
-    private CoordinatorLayout coordinatorLayout;
-    private FloatingActionButton floatingActionButton;
     private boolean isMapEditable;
+
+    @BindView(R.id.activity_main) CoordinatorLayout coordinatorLayout;
+
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @OnClick(R.id.fab)
+    public void fabClick (){
+        isMapEditable = true;
+        fab.hide();
+        addNewPlaceSnackbar = Snackbar.make(coordinatorLayout,
+                R.string.snaclbar_alert_add_new_place, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.snackbar_alert_cancel, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        isMapEditable = false;
+                        fab.show();
+                    }
+                });
+        addNewPlaceSnackbar.show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
         isMapEditable = false;
-
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isMapEditable = true;
-                floatingActionButton.hide();
-                addNewPlaceSnackbar = Snackbar.make(coordinatorLayout,
-                        R.string.snaclbar_alert_add_new_place, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(R.string.snackbar_alert_cancel, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                isMapEditable = false;
-                                floatingActionButton.show();
-                            }
-                        });
-                addNewPlaceSnackbar.show();
-            }
-        });
-
         if (savedInstanceState == null) {
             Picasso.Builder picassoBuilder = new Picasso.Builder(this);
             picassoBuilder.downloader(new OkHttp3Downloader(new OkHttpClient()));
@@ -110,10 +109,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 TextView text = (TextView) v.findViewById(R.id.textView);
                 TextView lastVisited = (TextView) v.findViewById(R.id.textView2);
                 ImageView image = (ImageView) v.findViewById(R.id.imageView);
-                String formatedDate = new SimpleDateFormat("EEE, d MMM yyyy K:mm a")
+                String formatedDate = new SimpleDateFormat("EEE, d MMM yyyy K:mm a", Locale.ENGLISH)
                         .format(markerPoint.getLastVisited().getTime());
                 text.setText(marker.getTitle());
-                lastVisited.setText("Last visited\n" + formatedDate);
+                lastVisited.setText("Last visited" + formatedDate);
                 Uri imageUrl = markerPoint.getImage();
 
                 Picasso.with(MainActivity.this).load(imageUrl).resize(0, 300)
@@ -131,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     addNewPlaceSnackbar.dismiss();
                     AddNewPlaceFragment addNewPlaceFragment =
                             AddNewPlaceFragment.newInstance(latLng);
-                    floatingActionButton.show();
+                    fab.show();
                     isMapEditable = false;
                     getFragmentManager()
                             .beginTransaction()
