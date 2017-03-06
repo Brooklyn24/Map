@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import static com.example.brooklyn.myapplication.MainActivity.TAG;
@@ -19,7 +20,7 @@ import static com.example.brooklyn.myapplication.MainActivity.TAG;
  * Created by Brooklyn on 09-Feb-17.
  */
 
-public class PointsFromBdLoader extends AsyncTaskLoader<ArrayList<GeoPoint>>{
+public class PointsFromBdLoader extends AsyncTaskLoader<HashMap<Integer, GeoPoint>>{
 
 
     public PointsFromBdLoader(Context context) {
@@ -33,8 +34,8 @@ public class PointsFromBdLoader extends AsyncTaskLoader<ArrayList<GeoPoint>>{
     }
 
     @Override
-    public ArrayList<GeoPoint> loadInBackground() {
-        ArrayList<GeoPoint> geoPoints = new ArrayList<>();
+    public HashMap<Integer, GeoPoint> loadInBackground() {
+        HashMap<Integer, GeoPoint> geoPoints = new HashMap<>();
         Log.d(TAG, "loadInBackground: ");
         Cursor cursor = DataBaseSQLiteOpenHelper.getInstance(getContext()).getAllData();
 
@@ -48,8 +49,6 @@ public class PointsFromBdLoader extends AsyncTaskLoader<ArrayList<GeoPoint>>{
                             .parse(strDate));
                     GeoPoint geoPoint =
                             new GeoPoint(
-                                    cursor.getInt(cursor
-                                            .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_ID)),
                                     cursor.getDouble(cursor
                                             .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_LAT)),
                                     cursor.getDouble(cursor
@@ -60,7 +59,10 @@ public class PointsFromBdLoader extends AsyncTaskLoader<ArrayList<GeoPoint>>{
                                             .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_IMAGE))),
                             date
                     );
-                    geoPoints.add(geoPoint);
+                    geoPoints.put(
+                            cursor.getInt(cursor
+                                    .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_ID)),
+                            geoPoint);
 
                 } catch (ParseException e) {
                     e.printStackTrace();

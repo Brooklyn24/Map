@@ -21,7 +21,7 @@ import java.util.List;
 public class DataBaseSQLiteOpenHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "Map";
-    private static final int DB_VERSION = 11;
+    private static final int DB_VERSION = 13;
     public static final String TAG = "logz";
 
     public static final String TABLE_NAME = "places";

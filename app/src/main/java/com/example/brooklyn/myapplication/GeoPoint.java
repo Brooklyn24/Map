@@ -16,27 +16,10 @@ import java.util.Date;
 
 public class GeoPoint {
 
-    private int id;
     private final LatLng latLng;
     private final String text;
     private final Uri image;
     private final Calendar lastVisited;
-
-    public GeoPoint(int id, Double latitude, Double longitude, String text, Uri image, Calendar lastVisited) {
-        this.id = id;
-        this.latLng = new LatLng(latitude,longitude);
-        this.text = text;
-        this.image = image;
-        this.lastVisited = lastVisited;
-    }
-
-    public GeoPoint(int id, LatLng latLng, String text, Uri image, Calendar lastVisited) {
-        this.id = id;
-        this.latLng = latLng;
-        this.text = text;
-        this.image = image;
-        this.lastVisited = lastVisited;
-    }
 
     public GeoPoint(Double latitude, Double longitude, String text, Uri image, Calendar lastVisited) {
         this.latLng = new LatLng(latitude,longitude);
@@ -50,14 +33,6 @@ public class GeoPoint {
         this.text = text;
         this.image = image;
         this.lastVisited = lastVisited;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public LatLng getLatLng() {
