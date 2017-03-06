@@ -47,14 +47,17 @@ public class PointsFromBdLoader extends AsyncTaskLoader<ArrayList<GeoPoint>>{
                     date.setTime(new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.ENGLISH)
                             .parse(strDate));
                     GeoPoint geoPoint =
-                            new GeoPoint(cursor.getDouble(cursor
-                                    .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_LAT)),
-                            cursor.getDouble(cursor
-                                    .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_LONG)),
-                            cursor.getString(cursor
-                                    .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_TEXT)),
-                            Uri.parse(cursor.getString(cursor
-                                    .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_IMAGE))),
+                            new GeoPoint(
+                                    cursor.getInt(cursor
+                                            .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_ID)),
+                                    cursor.getDouble(cursor
+                                            .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_LAT)),
+                                    cursor.getDouble(cursor
+                                            .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_LONG)),
+                                    cursor.getString(cursor
+                                            .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_TEXT)),
+                                    Uri.parse(cursor.getString(cursor
+                                            .getColumnIndex(DataBaseSQLiteOpenHelper.COLUMN_IMAGE))),
                             date
                     );
                     geoPoints.add(geoPoint);
